@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Data (uploads, vector index, sqlite db)
+backend/data/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/next-env.d.ts
+
+# OS / editor
+.DS_Store
+.env
+.env.local

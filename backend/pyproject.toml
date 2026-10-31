@@ -1,0 +1,45 @@
+[project]
+name = "contextpocket-backend"
+version = "0.1.0"
+description = "ContextPocket API: local-first personal learning system (RAG + adaptive revision)"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "pymupdf>=1.24,<2",
+    "fastembed>=0.5",
+    "faiss-cpu>=1.8",
+    "numpy>=1.26,<3",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+# Optional torch-based backend (CP_EMBEDDING_BACKEND=sentence-transformers).
+# Not installable on Intel macOS: PyTorch stopped publishing x86_64 mac wheels.
+torch = [
+    "sentence-transformers>=3.0",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
