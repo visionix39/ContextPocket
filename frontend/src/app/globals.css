@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Pastel subject palette (matches backend PALETTE names) */
+  --color-coral: #f28b94;
+  --color-aqua: #8edce6;
+  --color-lavender: #b9b4f0;
+  --color-sunny: #fbd98b;
+  --color-mint: #8ed1b3;
+  --color-peach: #fbc4a0;
+  --color-sky: #a9ccf5;
+  --color-rose: #f5b5d1;
+
+  /* Brand + neutrals */
+  --color-grape: #6c5ce7;
+  --color-grape-dark: #4f3fd1;
+  --color-grape-soft: #ece9ff;
+  --color-canvas: #f6f5fc;
+  --color-ink: #1f2235;
+  --color-ink-soft: #5b6078;
+  --color-line: #e8e6f4;
+
+  --radius-xl2: 1.25rem;
+  --shadow-card: 0 10px 30px -12px rgb(76 63 209 / 0.18);
+  --shadow-soft: 0 4px 16px -8px rgb(31 34 53 / 0.15);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-drift: drift 14s ease-in-out infinite;
+  --animate-wiggle: wiggle 2.4s ease-in-out infinite;
+  --animate-pop: pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  --animate-shake: shake 0.4s ease-in-out both;
+  --animate-confetti: confetti 1.6s ease-out forwards;
+  --animate-bounce-soft: bounceSoft 1.4s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(14px); }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.92) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(240px) rotate(540deg); opacity: 0; }
+  }
+  @keyframes bounceSoft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* decorative purple sweep behind the app, like the reference mock */
+.cp-backdrop {
+  background:
+    radial-gradient(1200px 600px at -10% -20%, rgb(108 92 231 / 0.18), transparent 60%),
+    radial-gradient(900px 500px at 110% 110%, rgb(142 220 230 / 0.25), transparent 60%),
+    var(--color-canvas);
+}
+
+.cp-card {
+  background: white;
+  border-radius: var(--radius-xl2);
+  box-shadow: var(--shadow-card);
+}
+
+.cp-tile {
+  border-radius: 1rem;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.cp-tile:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-float-slow, .animate-drift, .animate-wiggle {
+    animation: none;
+  }
+}
+
+/* 3D flip for flashcards */
+.cp-flip {
+  perspective: 1200px;
+}
+.cp-flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cp-flip.is-flipped .cp-flip-inner {
+  transform: rotateY(180deg);
+}
+.cp-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.cp-flip-back {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-flip-inner { transition: none; }
+  .animate-shake, .animate-confetti, .animate-bounce-soft { animation: none; }
+}

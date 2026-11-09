@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 
 from .config import get_settings
 from .db import get_db, init_db
-from .models import Chunk, Document
-from .routers import documents, search
+from .models import Chunk, Document, Question, QuestionSet
+from .routers import documents, search, study
 from .schemas import HealthOut
 from .services.embeddings import get_embedder
 from .services.llm import OllamaClient
@@ -48,6 +48,7 @@ app.add_middleware(
 )
 app.include_router(documents.router)
 app.include_router(search.router)
+app.include_router(study.router)
 
 
 @app.get("/health", response_model=HealthOut)
@@ -69,4 +70,6 @@ def health(db: Session = Depends(get_db)):
         documents=db.query(func.count(Document.id)).scalar() or 0,
         chunks=db.query(func.count(Chunk.id)).scalar() or 0,
         index_size=index_size,
+        question_sets=db.query(func.count(QuestionSet.id)).scalar() or 0,
+        questions=db.query(func.count(Question.id)).scalar() or 0,
     )

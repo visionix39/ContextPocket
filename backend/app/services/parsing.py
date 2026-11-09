@@ -43,7 +43,12 @@ def strip_inline_markdown(text: str) -> str:
     return _INLINE_MD_RE.sub(lambda m: m.group(2) or m.group(3) or m.group(4) or "", text)
 
 
+_LIGATURES = {"\ufb00": "ff", "\ufb01": "fi", "\ufb02": "fl", "\ufb03": "ffi", "\ufb04": "ffl", "\u2019": "'"}
+
+
 def normalise(text: str) -> str:
+    for lig, plain in _LIGATURES.items():  # PDFs often emit typographic ligatures
+        text = text.replace(lig, plain)
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     # join words hyphenated at line end ("regular-\nisation" -> "regularisation")
     text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)
